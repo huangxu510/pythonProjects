@@ -76,5 +76,24 @@ def login_handle(request):
 
 
 def info(request):
-    return render(request, 'df_user/user_center_info.html')
+    context = {'title': '用户中心',
+               'page_name': 1,
+               'shopping_cart': 0,
+               'info': 1}
+    return render(request, 'df_user/user_center_info.html', context)
 
+
+def order(request):
+    context = {'title': '用户中心',
+               'page_name': 1,
+               'shopping_cart': 0,
+               'order': 1}
+    return render(request, 'df_user/user_center_order.html', context)
+
+
+def site(request):
+    context = {'title': '用户中心',
+               'page_name': 1,
+               'shopping_cart': 0,
+               'site': 1}
+    return render(request, 'df_user/user_center_site.html', context)
