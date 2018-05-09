@@ -68,10 +68,14 @@ def login_handle(request):
             request.session['user_id'] = users[0].id
             return red
         else:
-            contex = {'title': '用户登录', 'error_name': 0, 'error_pwd': 1}
+            contex = {'title': '用户登录',
+                      'error_name': 0,
+                      'error_pwd': 1}
             return render(request, 'df_user/login.html', contex)
     else:
-        contex = {'title': '用户登录', 'error_name': 1, 'error_pwd': 0}
+        contex = {'title': '用户登录',
+                  'error_name': 1,
+                  'error_pwd': 0}
         return render(request, 'df_user/login.html', contex)
 
 
