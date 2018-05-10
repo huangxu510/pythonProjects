@@ -66,27 +66,23 @@
         </div>
     </div>
 
-    {% for type in type_list %}
+    {% for dict in list %}
         <div class="list_model">
             <div class="list_title clearfix">
-                <h3 class="fl" id="model01">{{ type.tname }}</h3>
+                <h3 class="fl" id="model01">{{ dict.type.tname }}</h3>
                 <div class="subtitle fl">
                     <span>|</span>
-{#                    {% for goods in goods_list_hot.{{ forloop.counter }} %}#}
-{#                    {% for goods in goods_list[{{ forloop.counter }}] %}#}
 
-                    <a href="#">{{ goods.gname }}</a>
-{#                    {% endfor %}#}
+                    {% for goods in dict.goods_list_hot  %}
+                        <a href="#">{{ goods.gname }}</a>
+                    {% endfor %}
 
-{#                    <a href="#">鲜芒</a>#}
-{#                    <a href="#">加州提子</a>#}
-{#                    <a href="#">亚马逊牛油果</a>#}
                 </div>
                 <a href="#" class="goods_more fr" id="fruit_more">查看更多 ></a>
             </div>
 
             <div class="goods_con clearfix">
-                <div class="goods_banner fl"><img src="/static/{{ type.timage }}"></div>
+                <div class="goods_banner fl"><img src="/static/{{ dict.type.timage }}"></div>
                 <ul class="goods_list fl">
                     <li>
                         <h4><a href="#">草莓</a></h4>
