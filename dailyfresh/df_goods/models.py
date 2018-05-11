@@ -13,7 +13,7 @@ class TypeInfo(models.Model):
 
 class GoodsInfo(models.Model):
     gname = models.CharField(max_length=20)
-    gimage = models.ImageField(upload_to='df_goods')
+    gimage = models.ImageField(upload_to='df_goods', blank=True)
     gprice = models.DecimalField(max_digits=10, decimal_places=2)
     gunit = models.CharField(max_length=20, default='500g')
     gclick = models.IntegerField(default=0)
@@ -25,5 +25,3 @@ class GoodsInfo(models.Model):
 
     def __str__(self):
         return self.gname.encode('utf-8')
-
-

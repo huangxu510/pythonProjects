@@ -12,6 +12,7 @@ class TypeInfoAdmin(admin.ModelAdmin):
 class GoodsInfoAdmin(admin.ModelAdmin):
     list_display = ['id', 'gname', 'gprice', 'gunit', 'ginventory', 'gtype', 'isDeleted']
     list_per_page = 15
+    list_filter = ['gtype']
 
 
 admin.site.register(TypeInfo, TypeInfoAdmin)
