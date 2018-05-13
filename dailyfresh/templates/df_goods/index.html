@@ -74,7 +74,7 @@
                     <span>|</span>
 
                     {% for goods in dict.goods_list_hot  %}
-                        <a href="/{{ goods.id }}">{{ goods.gname }}</a>
+                        <a href="/goods/detail{{ goods.id }}">{{ goods.gname }}</a>
                     {% endfor %}
 
                 </div>
@@ -86,8 +86,8 @@
                 <ul class="goods_list fl">
                     {% for goods in dict.goods_list_new %}
                         <li>
-                            <h4><a href="/{{ goods.id }}">{{ goods.gname }}</a></h4>
-                            <a href="/{{ goods.id }}"><img src="/static/{{ goods.gimage }}"></a>
+                            <h4><a href="/goods/detail{{ goods.id }}">{{ goods.gname }}</a></h4>
+                            <a href="/goods/detail{{ goods.id }}"><img src="/static/{{ goods.gimage }}"></a>
                             <div class="prize">¥ {{ goods.gprice }}</div>
                         </li>
                     {% endfor %}

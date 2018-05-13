@@ -2,7 +2,9 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from .models import *
+from df_goods.models import *
 from hashlib import sha1
+from . import user_decorator
 
 # Create your views here.
 def register(request):
@@ -59,10 +61,11 @@ def login_handle(request):
         s1 = sha1()
         s1.update(pwd)
         if s1.hexdigest() == users[0].upwd:
-            red = HttpResponseRedirect('/user/info')
+            url = request.COOKIES.get('url', '/')
+            red = HttpResponseRedirect(url)
             if remember != 0:
                 red.set_cookie('user_name', user_name)
-            else :
+            else:
                 red.set_cookie('user_name', '', max_age=-1)
             request.session['user_name'] = user_name
             request.session['user_id'] = users[0].id
@@ -79,25 +82,64 @@ def login_handle(request):
         return render(request, 'df_user/login.html', contex)
 
 
+def logout(request):
+    request.session.flush()
+    return redirect('/')
+
+
+@user_decorator.is_login
 def info(request):
-    context = {'title': '用户中心',
-               'page_name': 1,
-               'shopping_cart': 0,
-               'info': 1}
+    user_id = request.session['user_id']
+    user = UserInfo.objects.get(id=user_id)
+
+    history_key = '%s_goods_history' % user_id
+    history_id_list = request.COOKIES.get(history_key, '').split(',')
+    history_list = []
+    for id in history_id_list:
+        goods = GoodsInfo.objects.get(id=id)
+        history_list.append(goods)
+
+
+    context = {
+        'title': '用户中心',
+        'page_name': 1,
+        'shopping_cart': 0,
+        'info': 1,
+        'user': user,
+        'history_list': history_list,
+    }
     return render(request, 'df_user/user_center_info.html', context)
 
 
+@user_decorator.is_login
 def order(request):
-    context = {'title': '用户中心',
-               'page_name': 1,
-               'shopping_cart': 0,
-               'order': 1}
+    context = {
+        'title': '用户中心',
+        'page_name': 1,
+        'shopping_cart': 0,
+        'order': 1,
+    }
     return render(request, 'df_user/user_center_order.html', context)
 
 
+@user_decorator.is_login
 def site(request):
-    context = {'title': '用户中心',
-               'page_name': 1,
-               'shopping_cart': 0,
-               'site': 1}
+    user = UserInfo.objects.get(id=request.session['user_id'])
+    context = {
+        'title': '用户中心',
+        'page_name': 1,
+        'shopping_cart': 0,
+        'site': 1,
+        'user': user,
+    }
     return render(request, 'df_user/user_center_site.html', context)
+
+
+def info_submit(request):
+    user = UserInfo.objects.get(id=request.session['user_id'])
+    user.uaddressee = request.GET['addressee']
+    user.uaddress = request.GET['address']
+    user.uphone = request.GET['phone']
+    user.upostcode = request.GET['postcode']
+    user.save()
+    return redirect('/user/site/')

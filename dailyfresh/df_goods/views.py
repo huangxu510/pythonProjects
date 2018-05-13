@@ -91,4 +91,29 @@ def detail(request, goods_id):
         'goods_type': goods_type,
     }
 
-    return render(request, 'df_goods/detail.html', contex)
+    response = render(request, 'df_goods/detail.html', contex)
+
+
+    # 使用cookie存储用户最近浏览信息
+    user_id = request.session.get('user_id', None)
+    if user_id != None:
+        history_key = '%s_goods_history' % user_id
+        historys = request.COOKIES.get(history_key, '')
+
+        if historys != '':
+            history_list = historys.split(',')
+            # 如果商品存在,先删除以前的,然后将该商品添加到第一个
+            if goods_id in history_list:
+                history_list.remove(goods_id)
+
+            history_list.insert(0, goods_id)
+
+            while len(history_list) >= 6:
+                history_list.pop()
+            historys = ','.join(history_list)
+        else:
+            historys = goods_id
+
+        response.set_cookie(history_key, historys)
+
+    return response

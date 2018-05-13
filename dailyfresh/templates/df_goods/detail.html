@@ -46,6 +46,11 @@
             });
 
             $('.num_show').blur(function () {
+                count = parseInt($('.num_show').val());
+                if (count < 1) {
+                    count = 1;
+                }
+                $('.num_show').val(count)
                 calculateTotalAmount()
             })
 
